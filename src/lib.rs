@@ -13,7 +13,7 @@ fn print_metadata() {
 
     let size:WindowSize = window_size().unwrap();
     let size_image:usize = min(size.columns as usize, size.rows as usize);
-    let offset_image:usize = (size.columns as usize/2 - size_image);
+    let offset_image:usize = size.columns as usize/2 - size_image;
 
     let album_cover = get_album_cover();
     if !album_cover.is_empty() {
