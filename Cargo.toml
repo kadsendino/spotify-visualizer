@@ -1,7 +1,17 @@
 [package]
 name = "spotify-visualizer"
+authors = ["kadsendino"]
+description = "A terminal Spotify visualizer written in Rust for kitty."
+repository = "https://github.com/kadsendino/spotify-visualizer"
+website = "https://github.com/kadsendino/spotify-visualizer"
+license = "MIT"
 version = "0.1.0"
 edition = "2024"
+
+[package.metadata.aur]
+depends = ["playerctl", "kitty", "curl"]
+makedepends = ["pkgconf", "cargo"]
+provides = ["spotify-visualizer"]
 
 [dependencies]
 crossterm = "0.29.0"
