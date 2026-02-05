@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-arch-package:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Install base dependencies
+        run: |
+          pacman -Sy --noconfirm \
+            base-devel \
+            git \
+            rust \
+            cargo \
+            openssl \
+            pkgconf
+
+      - name: Create build user (makepkg cannot run as root)
+        run: |
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install cargo-aur
+        run: |
+          sudo -u builder cargo install cargo-aur
+
+      - name: Generate PKGBUILD + source tarball
+        run: |
+          sudo -u builder cargo aur
+
+      - name: Build pacman package
+        run: |
+          chown -R builder:builder .
+          sudo -u builder makepkg --noconfirm --clean --syncdeps
+
+      - name: Prepare release artifacts
+        run: |
+          mkdir release
+          cp *.pkg.tar.zst release/
+          cp *.tar.gz release/
+          cp PKGBUILD release/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
