@@ -1,7 +1,7 @@
 [package]
 name = "spotify-visualizer"
 authors = ["kadsendino"]
-description = "A terminal Spotify visualizer written in Rust for Kitty."
+description = "A terminal-based Spotify visualizer written in Rust for Kitty."
 repository = "https://github.com/kadsendino/spotify-visualizer"
 website = "https://github.com/kadsendino/spotify-visualizer"
 license = "MIT"
