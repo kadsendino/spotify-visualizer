@@ -17,7 +17,14 @@ paru -S spotify-visualizer-bin
 1. Download from Github Releases
 
 ```
-pacman -U spotify-visualizer-bin.V.V.V-x86_64.pkg.tar.zst
+pacman -U spotify-visualizer-bin-0.1.0-1-x86_64.pkg.tar.zst
+```
+
+## Build From Source
+```
+git clone https://github.com/kadsendino/spotify-visualizer.git
+cd spotify-visualizer
+cargo run --release
 ```
 
 ## License
