@@ -21,7 +21,7 @@ script = [
   "cd ../..",
 
   "mkdir -p target/release",
-  "cp target/cargo-aur/${PKG_NAME}-bin-${PKG_VER}-*-x86_64.pkg.tar.zst target/release/",
+  "cp target/cargo-aur/${PKG_NAME}-bin-${PKG_VER}-*-x86_64.pkg.tar.zst target/release/${PKG_NAME}-${PKG_VER}-*-x86_64.pkg.tar.zst",
   "cp target/cargo-aur/${PKG_NAME}-${PKG_VER}-x86_64.tar.gz target/release/"
 ]
 
