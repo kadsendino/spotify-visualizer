@@ -31,3 +31,22 @@ pub fn get_album_cover() -> String {
     let album_cover = String::from_utf8_lossy(&output.stdout).trim().to_string();
     album_cover
 }
+
+pub fn play_pause() {
+    let mut playerctl = Command::new("playerctl");
+    playerctl.arg("play-pause").status().expect("playerctl not found");
+}
+
+pub fn next() {
+    let mut playerctl = Command::new("playerctl");
+    playerctl.arg("next").status().expect("playerctl not found");
+}
+
+pub fn previous() {
+    let mut playerctl = Command::new("playerctl");
+    playerctl.arg("previous").status().expect("playerctl not found");
+}
+
+
+
+
