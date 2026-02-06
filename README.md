@@ -9,13 +9,13 @@ A terminal-based Spotify visualizer written in Rust for Kitty.
 ### Arch Linux
 
 ```
-pacman -U spotify-visualizer-2.0.0-x86_64.pkg.tar.zst
+pacman -U spotify-visualizer-3.0.0-x86_64.pkg.tar.zst
 ```
 
 ### Tar.gz
 
 ```
-tar -xzf spotify-visualizer-2.0.0-x86_64.tar.gz
+tar -xzf spotify-visualizer-3.0.0-x86_64.tar.gz
 ./spotify-visualizer
 ```
 
