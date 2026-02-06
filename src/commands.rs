@@ -14,13 +14,6 @@ pub fn get_title() -> String {
     String::from_utf8_lossy(&output.stdout).trim().to_string()
 }
 
-// pub fn get_album() -> String {
-//     let mut playerctl = Command::new("playerctl");
-//     playerctl.arg("metadata").arg("album");
-//     let output = playerctl.output().expect("playerctl not found");
-//     String::from_utf8_lossy(&output.stdout).trim().to_string()
-// }
-
 pub fn get_album_cover() -> String {
     let mut playerctl = Command::new("playerctl");
     playerctl.arg("metadata").arg("mpris:artUrl");

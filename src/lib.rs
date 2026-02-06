@@ -1,21 +1,11 @@
 mod commands;
 use commands::{get_artist, get_title, get_album_cover,next,play_pause,previous};
 mod utils;
-use utils::{draw_album_cover,download_album_cover,clear_terminal,flush_terminal};
+use utils::{draw_album_cover,download_album_cover,clear_terminal,flush_terminal,write_fallback,get_fallback_path};
 use crossterm::terminal::{WindowSize, disable_raw_mode, enable_raw_mode, window_size};
 use crossterm::event::{read, Event, KeyCode, KeyModifiers};
 use std::time::Duration;
 use std::thread::sleep;
-use std::fs;
-use std::io::Write;
-
-const FALLBACK_ALBUM_COVER: &[u8] = include_bytes!("../data/fallback_album_cover.jpg");
-
-fn write_fallback() -> std::io::Result<()> {
-    let mut file = fs::File::create("/tmp/fallback_album_cover.jpg")?;
-    file.write_all(FALLBACK_ALBUM_COVER)?;
-    Ok(())
-}
 
 fn print_metadata() {
     clear_terminal();
@@ -25,8 +15,12 @@ fn print_metadata() {
     let offset_image_rows:usize = 0;
 
     let album_cover = get_album_cover();
-    let downloaded_path = download_album_cover(&album_cover);
-    draw_album_cover(&downloaded_path,size.rows-2,size.columns,offset_image_rows,offset_image_columns);
+    if !album_cover.is_empty() {
+        let downloaded_path = download_album_cover(&album_cover);
+        draw_album_cover(&downloaded_path,size.rows-2,size.columns,offset_image_rows,offset_image_columns);
+    } else {
+        draw_album_cover(&get_fallback_path(),size.rows-2,size.columns,offset_image_rows,offset_image_columns);
+    }
 
     let title = get_title();
     let artist = get_artist();
@@ -38,8 +32,7 @@ fn print_metadata() {
         print!("{}\x1b[1;33m{}\x1b[0m - \x1b[0;36m{}\x1b[0m", space, title, artist);
     }
 
-    // println!("\n{} {} {} {} {}",size_image,size.rows,size.columns,size.width,size.height);
-    print!("\x1b[?25l"); // Hide cursor
+    print!("\x1b[?25l");
     flush_terminal();
     enable_raw_mode().unwrap();
 }
