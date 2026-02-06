@@ -36,6 +36,13 @@ pub fn previous() {
     playerctl.arg("previous").status().expect("playerctl not found");
 }
 
+pub fn is_player_active() -> bool {
+    Command::new("playerctl")
+        .arg("status")
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false)
+}
 
 
 

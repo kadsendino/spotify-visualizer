@@ -1,5 +1,5 @@
 mod commands;
-use commands::{get_artist, get_title, get_album_cover,next,play_pause,previous};
+use commands::{get_artist, get_title, get_album_cover,next,play_pause,previous,is_player_active};
 mod utils;
 use utils::{draw_album_cover,download_album_cover,clear_terminal,flush_terminal,write_fallback,get_fallback_path};
 use crossterm::terminal::{WindowSize, disable_raw_mode, enable_raw_mode, window_size};
@@ -61,15 +61,16 @@ pub fn spotify_visualizer(update_interval:Option<Duration>){
         }
 
         if let Ok(Event::Key(key)) = read() {
+            let player_active:bool = is_player_active();
             match key.code {
                 KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => {
                     disable_raw_mode().unwrap();
                     clear_terminal();
                     break;
                 }
-                KeyCode::Right => next(),
-                KeyCode::Left => previous(),
-                KeyCode::Char(' ') => play_pause(),
+                KeyCode::Right if player_active => next(),
+                KeyCode::Left if player_active => previous(),
+                KeyCode::Char(' ') if player_active => play_pause(),
                 _ => {}
             }
         }
