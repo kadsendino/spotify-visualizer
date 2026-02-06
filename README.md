@@ -9,13 +9,13 @@ A terminal-based Spotify visualizer written in Rust for Kitty.
 ### Arch Linux
 
 ```
-pacman -U spotify-visualizer-0.3.0-x86_64.pkg.tar.zst
+pacman -U spotify-visualizer-1.0.0-x86_64.pkg.tar.zst
 ```
 
 ### Tar.gz
 
 ```
-tar -xzf spotify-visualizer-0.3.0-x86_64.tar.gz
+tar -xzf spotify-visualizer-1.0.0-x86_64.tar.gz
 ./spotify-visualizer
 ```
 
@@ -26,6 +26,14 @@ git clone https://github.com/kadsendino/spotify-visualizer.git
 cd spotify-visualizer
 cargo run --release
 ```
+
+## Controls
+
+| Key        | Action       | Description                          |
+|------------|--------------|--------------------------------------|
+| Space      | Play-Pause   | Toggle play and pause of music       |
+| Rightarrow | Next         | Play next song                       |
+| Leftarrow  | Previous     | Play previous song                   |
 
 ## License
 
