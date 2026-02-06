@@ -6,6 +6,16 @@ use crossterm::terminal::{WindowSize, disable_raw_mode, enable_raw_mode, window_
 use crossterm::event::{read, Event, KeyCode, KeyModifiers};
 use std::time::Duration;
 use std::thread::sleep;
+use std::fs;
+use std::io::Write;
+
+const FALLBACK_ALBUM_COVER: &[u8] = include_bytes!("../data/fallback_album_cover.jpg");
+
+fn write_fallback() -> std::io::Result<()> {
+    let mut file = fs::File::create("/tmp/fallback_album_cover.jpg")?;
+    file.write_all(FALLBACK_ALBUM_COVER)?;
+    Ok(())
+}
 
 fn print_metadata() {
     clear_terminal();
@@ -34,8 +44,11 @@ fn print_metadata() {
     enable_raw_mode().unwrap();
 }
 
+
+
 pub fn spotify_visualizer(){
     print_metadata();
+    write_fallback();
     let update_interval:Duration = Duration::from_millis(100);
 
     let mut album_cover = get_album_cover();

@@ -18,7 +18,7 @@ pub fn clear_terminal() {
 
 pub fn download_album_cover(url: &str) -> String {
     let output_path = "/tmp/spotify_visualizer_album_cover.jpg";
-    let fallback_path = "data/fallback_album_cover.jpg";
+    let fallback_path = "/tmp/fallback_album_cover.jpg";
 
     let status = Command::new("curl")
         .arg("-s")
