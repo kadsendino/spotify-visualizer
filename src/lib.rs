@@ -6,31 +6,27 @@ use crossterm::terminal::{WindowSize, disable_raw_mode, enable_raw_mode, window_
 use crossterm::event::{read, Event, KeyCode, KeyModifiers};
 use std::time::Duration;
 use std::thread::sleep;
-use std::cmp::min;
 
 fn print_metadata() {
     clear_terminal();
 
     let size:WindowSize = window_size().unwrap();
-    let size_image:usize = min(size.columns as usize, size.rows as usize);
-    let offset_image:usize = size.columns as usize/2 - size_image;
+    let offset_image_columns:usize = 0;
+    let offset_image_rows:usize = 0;
 
     let album_cover = get_album_cover();
-    if !album_cover.is_empty() {
-        let downloaded_path = download_album_cover(&album_cover);
-        if !downloaded_path.is_empty() {
-            draw_album_cover(&downloaded_path,size_image,offset_image);
-        }
-    } else {
-        // println!("No album cover found");
-    }
+    let downloaded_path = download_album_cover(&album_cover);
+    draw_album_cover(&downloaded_path,size.rows-2,size.columns,offset_image_rows,offset_image_columns);
 
     let title = get_title();
     let artist = get_artist();
     let offset_text = (size.columns as usize).saturating_sub(artist.len() + title.len() + 3) / 2;
     let space = " ".repeat(offset_text);
-    // println!("{}{} - {}", space,artist, title);
-    print!("{}\x1b[1;33m{}\x1b[0m - \x1b[0;36m{}\x1b[0m", space, title, artist);
+    if artist.is_empty() {
+        print!("{}\x1b[1;33m{}\x1b[0m", space, title);
+    } else {
+        print!("{}\x1b[1;33m{}\x1b[0m - \x1b[0;36m{}\x1b[0m", space, title, artist);
+    }
 
     // println!("\n{} {} {} {} {}",size_image,size.rows,size.columns,size.width,size.height);
     print!("\x1b[?25l"); // Hide cursor
@@ -43,10 +39,16 @@ pub fn spotify_visualizer(){
     let update_interval:Duration = Duration::from_millis(100);
 
     let mut album_cover = get_album_cover();
+    let mut last_title = get_title();
+    let mut windowsize:WindowSize = window_size().unwrap();
     loop {
         let current_album_cover = get_album_cover();
-        if current_album_cover != album_cover {
+        let current_title = get_title();
+        let current_windowsize = window_size().unwrap();
+        if current_album_cover != album_cover || current_title != last_title || current_windowsize.rows != windowsize.rows || current_windowsize.columns != windowsize.columns {
+            last_title = current_title;
             album_cover = current_album_cover;
+            windowsize = current_windowsize;
             print_metadata();
         }
 
