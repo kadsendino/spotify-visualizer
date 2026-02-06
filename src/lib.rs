@@ -26,10 +26,16 @@ fn print_metadata() {
     let artist = get_artist();
     let offset_text = (size.columns as usize).saturating_sub(artist.len() + title.len() + 3) / 2;
     let space = " ".repeat(offset_text);
-    if artist.is_empty() {
-        print!("{}\x1b[1;33m{}\x1b[0m", space, title);
+    if !is_player_active() {
+        let fallback_text = "Player is not active";
+        let offset_fallback_text = (size.columns as usize).saturating_sub(fallback_text.len()) / 2;
+        let fallback_space = " ".repeat(offset_fallback_text);
+        print!("\n{}{}",fallback_space,fallback_text);
+    }
+    else if artist.is_empty() {
+        print!("\n{}\x1b[1;33m{}\x1b[0m", space, title);
     } else {
-        print!("{}\x1b[1;33m{}\x1b[0m - \x1b[0;36m{}\x1b[0m", space, title, artist);
+        print!("\n{}\x1b[1;33m{}\x1b[0m - \x1b[0;36m{}\x1b[0m", space, title, artist);
     }
 
     print!("\x1b[?25l");

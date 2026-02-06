@@ -58,7 +58,7 @@ pub fn draw_album_cover(album_cover_path:&str,rows:u16,columns:u16,offset_rows:u
         .status()
         .expect("kitty not found");
 
-    execute!(stdout(), MoveTo(0, columns)).unwrap();
+    execute!(stdout(), MoveTo(0, rows)).unwrap();
 }
 
 pub fn flush_terminal() {
