@@ -5,7 +5,7 @@ description = "A terminal-based Spotify visualizer written in Rust for Kitty."
 repository = "https://github.com/kadsendino/spotify-visualizer"
 website = "https://github.com/kadsendino/spotify-visualizer"
 license = "MIT"
-version = "0.3.0"
+version = "1.0.0"
 edition = "2024"
 
 [package.metadata.aur]
