@@ -44,12 +44,14 @@ fn print_metadata() {
     enable_raw_mode().unwrap();
 }
 
-
-
-pub fn spotify_visualizer(){
+pub fn spotify_visualizer(update_interval:Option<Duration>){
     print_metadata();
-    write_fallback();
-    let update_interval:Duration = Duration::from_millis(100);
+    let update_interval:Duration = update_interval.unwrap_or(Duration::from_millis(200));
+
+    while let Err(e) = write_fallback() {
+        eprintln!("Failed to write fallback album cover: {}", e);
+        sleep(Duration::from_secs(1));
+    }
 
     let mut album_cover = get_album_cover();
     let mut last_title = get_title();

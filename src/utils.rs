@@ -40,6 +40,7 @@ pub fn draw_album_cover(album_cover_path:&str,rows:u16,columns:u16,offset_rows:u
         .args([
             "+kitten", "icat",
             "--place", &format!("{}x{}@{}x{}",columns,rows,offset_columns,offset_rows),
+            "--scale-up=yes",
             album_cover_path
         ])
         .status()
