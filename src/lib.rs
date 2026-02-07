@@ -3,7 +3,7 @@ use commands::{get_artist, get_title, get_album_cover,next,play_pause,previous,i
 mod utils;
 use utils::{draw_album_cover,download_album_cover,clear_terminal,flush_terminal,write_fallback,get_fallback_path};
 use crossterm::terminal::{WindowSize, disable_raw_mode, enable_raw_mode, window_size};
-use crossterm::event::{read, Event, KeyCode, KeyModifiers};
+use crossterm::event::{poll,read, Event, KeyCode, KeyModifiers};
 use std::time::Duration;
 use std::thread::sleep;
 
@@ -66,20 +66,24 @@ pub fn spotify_visualizer(update_interval:Option<Duration>){
             print_metadata();
         }
 
-        if let Ok(Event::Key(key)) = read() {
-            let player_active:bool = is_player_active();
-            match key.code {
-                KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => {
-                    disable_raw_mode().unwrap();
-                    clear_terminal();
-                    break;
+
+        if poll(Duration::from_millis(0)).unwrap() {
+            if let Ok(Event::Key(key)) = read() {
+                let player_active: bool = is_player_active();
+                match key.code {
+                    KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => {
+                        disable_raw_mode().unwrap();
+                        clear_terminal();
+                        break;
+                    }
+                    KeyCode::Right if player_active => next(),
+                    KeyCode::Left if player_active => previous(),
+                    KeyCode::Char(' ') if player_active => play_pause(),
+                    _ => {}
                 }
-                KeyCode::Right if player_active => next(),
-                KeyCode::Left if player_active => previous(),
-                KeyCode::Char(' ') if player_active => play_pause(),
-                _ => {}
             }
         }
+
 
         sleep(update_interval);
     }
