@@ -4,6 +4,11 @@
 
 A terminal-based Spotify visualizer written in Rust for Kitty.
 
+## Dependencies
+```
+kitty curl playerctl
+```
+
 ## Installation
 
 ### Arch Linux
